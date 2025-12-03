@@ -1,0 +1,83 @@
+const mysql = require('mysql2');         // mysql2 com suporte de promise (async/await). 
+const bcrypt = require('bcrypt');        // Biblioteca para gerar Hashes.
+const readline = require('readline');    // Biblioteca para criar inputs de (Entrada/Saída).
+
+
+// Função para conecta-se MySQL.
+function conectarMysql()
+{
+   const conn = mysql.createConnection({
+      host: 'localhost',
+      user: '',
+      password: '',
+      database: ''
+   });
+
+  // realizando a conexão com o banco.
+  conn.connect((err) =>
+  {
+    if(err)
+    {
+      console.error('erro ao conectar, verifique as credenciais do banco', err);
+      return;
+    }
+
+  console.log('[+] conectado ao MySQL! \n');
+  });
+
+  return conn;      // IMPORTANTE: retorna a conexão.
+}
+const conn = conectarMysql();  // chamando a função (FORA) dela mesma. sem isso, seu programa irá travar.
+
+
+
+// função sleep para criar um (Delay), para não bugar os inputs do usuário.
+function sleep(ms)
+{
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// entrada de dados.
+const rl = readline.createInterface({
+  input: process.stdin,           // Entrada
+  output: process.stdout          // Saída
+});
+
+// Adicionando um pequeno Delay antes de exibir o primeiro PROMPT. 1(seg) antes de continuar
+sleep(1000).then(() =>
+{
+  rl.question(' primeiro input, nome completo: ', (name) => {
+    rl.question(' segundo input, username: ', (usermame) => {
+      rl.question(' terceiro input, password: ', (password) => {
+
+        // vamos gerar o (hashes) da entrada password!
+        bcrypt.hash(password, 13, (err, passwordHash) => {
+          if(err)
+          {
+            console.error('(x) erro ao criptografar', err);
+            rl.close();
+            conn.end();
+            return;
+          }
+
+
+          // preparando uma query, INSERT INTO(...)
+          const sql = 'INSERT INTO <'table'>(<'colum'>, <'colum'>, <'colum'>) VALUES (?, ?, ?)';
+          const.query(sql, [name, username, passwordHash], (err, result) => 
+          {
+             if(err)
+              {
+                console.error('(x) erro ao realizar query, verifique se existe o banco de dados', err);
+              } else {
+                console.log('[+] registro com sucesso ID: ', result.insertId);
+              }
+
+
+            rl.close();    // fechar os prompts
+            conn.end();    // fechar conexão com o MySQL
+          });
+        });
+      });
+    });
+  });
+});
