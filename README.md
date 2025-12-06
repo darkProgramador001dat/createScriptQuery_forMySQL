@@ -17,3 +17,10 @@ esperar a promessa ser comprida, para poder ser chamada dentro da função compa
 DEPENDENCIAS:
   bcrypt
   readline
+
+
+O script createHash.js foi projeto de com uso de inputs, tornando mais facil de criar seus hashes, sem alterar o codigo fonte.
+
+DEPENDENCIAS:
+  bcrypt
+  readline
