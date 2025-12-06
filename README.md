@@ -1,4 +1,4 @@
-SOBRE O CODIGO:
+SOBRE OS CODIGOS DO REPOSITORIO:
 
 O script queryHashes_forMySQL.js foi projetado para facilitar hà inserção de hashes dentro de um banco de dados(MySQL).
 Deve haver um banco de dados na máquina, para o scripting funcionar corretamente. E configurar um 
