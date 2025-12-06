@@ -1,21 +1,33 @@
-const bcrypt = require('bcrypt');
-const readline = require('readline');
+const bcrypt = require('bcrypt');      // importando bibliotecas
+const readline = require('readline');  // importando bibliotecas
 
+//
+//  Sobre o codigo, o usuário digita um hash do tipo bcrypt.
+//  O programa contém uma lista de palavras em texto legivel, se a palavra for igual decifra seu hash.
+//  Esse programa funciona de forma assíncrona, por uso de readline. Temos 2(duas) funções, uma depende da outra
+//  para funcionar, então. Precisamos de um software com async/await.
+//  Precisamos pegar o hash, o programa precisa esperar o usuário informar o hash. Para dar sequencia, ai podemos chamar a proxima função.
+//  Contendo uma wordlist no proprio programa, torna mais pesado.
+//
+
+
+// FUNÇÂO entrada/saida responsavél por pegar a entrada do usuario.
 function es()
 {
-  return new Promise((resolve) => {
+  return new Promise((resolve) => {  // criando uma nova Promessa, por que?, sem uma Promise o programa responde de modo sincrono, causando bane.
     const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
+      input: process.stdin,      // metdo entrada
+      output: process.stdout     // metodo saida
     
     });
-    rl.question("[+] digite uma palavra, converter em HASH: ", (hash) => {
-      rl.close();
-      resolve(hash);
+    rl.question("[+] digite uma palavra, converter em HASH: ", (hash) => {      // criando um input, e armazendo o resultado em hash.
+      rl.close();    // fechar o input. readline funciona de forma assincrona. Sem utilizar o close() continuara funcionando no seu sistema em oculto.
+      resolve(hash);  // finalizando a promessa, preparando para ser usado em outra função.
     });
   });
 }
 
+// declarando uma função assincrona, para uso do bcrypt.
 async function compareHash()
 {
 
@@ -23,15 +35,15 @@ async function compareHash()
     'admin', 'root', 'ILoveYou', '123', 'abc', 'ABC', '01234567','anonymous'
   ];
   
-  const hash = await es();
+  const hash = await es();  // esperar a função es() terminar, para realizar a comparação do hash com word.
 
-  for(word of wordlist)
+  for(word of wordlist)  // Iterando cada item da lista.
   {
-    const match = await bcrypt.compare(word, hash)
-    if(match)
+    const match = await bcrypt.compare(word, hash) // bcrypt, espera a função es() terminar a promessa
+    if(match)  // Se, o hash contem em nossa lista.
     {
       console.log("[+] hash encontrado em sua lista: ", word);
-      break;
+      break;  // pare ao encontrar
     } else {
       console.log("não encontrado");
     }
