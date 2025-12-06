@@ -1,0 +1,40 @@
+const bcrypt = require('bcrypt');
+const readline = require('readline');
+
+function es()
+{
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    
+    });
+    rl.question("[+] digite uma palavra, converter em HASH: ", (hash) => {
+      rl.close();
+      resolve(hash);
+    });
+  });
+}
+
+async function compareHash()
+{
+
+  const wordlist = [
+    'admin', 'root', 'ILoveYou', '123', 'abc', 'ABC', '01234567','anonymous'
+  ];
+  
+  const hash = await es();
+
+  for(word of wordlist)
+  {
+    const match = await bcrypt.compare(word, hash)
+    if(match)
+    {
+      console.log("[+] hash encontrado em sua lista: ", word);
+      break;
+    } else {
+      console.log("não encontrado");
+    }
+  } 
+}
+compareHash();
