@@ -10,7 +10,7 @@ DEPENDENCIAS:
 
 
 
-O script compareHash.js foi projetado para realizar comparações de hashes, o usuáio informa um hash do tipo bcrypt,
+O script compareHash.js foi projetado para realizar comparações de hashes, o usuário informa um hash do tipo bcrypt,
 no programa em sí. Contém um wordlist tornando o programa pesado, porém funcional. Sobre a funções es() precisar
 esperar a promessa ser comprida, para poder ser chamada dentro de compareHash.
 
